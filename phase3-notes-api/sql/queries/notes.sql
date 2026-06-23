@@ -1,0 +1,13 @@
+-- TODO(phase3-sqlc-notes): Write sqlc queries for notes and tags.
+--
+-- Task — define named queries:
+--   name: CreateNote           :one  INSERT ... RETURNING *
+--   name: GetNoteByID          :one  SELECT ... WHERE id = $1 AND user_id = $2
+--   name: ListNotesByUser      :many SELECT ... WHERE user_id = $1 ORDER BY updated_at DESC
+--   name: UpdateNote           :one  UPDATE ... RETURNING *
+--   name: DeleteNote           :exec DELETE ... WHERE id = $1 AND user_id = $2
+--   name: ListNotesByUserAndTag :many JOIN note_tags ... WHERE user_id = $1 AND tag = $2
+--   name: UpsertTag            :one  INSERT ... ON CONFLICT DO NOTHING RETURNING *
+--   name: LinkNoteTag         :exec INSERT INTO note_tags ...
+--
+-- After writing queries: sqlc generate

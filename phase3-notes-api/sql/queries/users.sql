@@ -1,0 +1,8 @@
+-- TODO(phase3-sqlc-users): Write sqlc queries for users.
+--
+-- Task — define named queries (sqlc will generate Go code):
+--   name: CreateUser        :one   INSERT ... RETURNING *
+--   name: GetUserByEmail    :one   SELECT ... WHERE email = $1
+--   name: GetUserByID       :one   SELECT ... WHERE id = $1
+--
+-- Learn: https://docs.sqlc.dev/en/latest/howto/named.html

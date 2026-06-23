@@ -1,0 +1,10 @@
+-- TODO(phase3-migration-up): Create schema for Notes API.
+--
+-- Task — create tables:
+--   users       (id UUID PK, email UNIQUE, password_hash, created_at)
+--   notes       (id UUID PK, user_id FK, title, body, created_at, updated_at)
+--   tags        (id UUID PK, name UNIQUE)
+--   note_tags   (note_id FK, tag_id FK, PRIMARY KEY (note_id, tag_id))
+--
+-- Apply: migrate -path migrations -database "$DATABASE_URL" up
+-- Learn: https://github.com/golang-migrate/migrate

@@ -1,0 +1,15 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "sql/queries"
+    schema: "migrations"
+    gen:
+      go:
+        package: "db"
+        out: "internal/repository/postgres/db"
+        sql_package: "pgx/v5"
+        emit_json_tags: true
+        emit_empty_slices: true
+
+# TODO(phase3-sqlc): Install sqlc and run `sqlc generate` after writing queries.
+# Learn: https://docs.sqlc.dev/en/latest/

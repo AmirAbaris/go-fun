@@ -1,0 +1,13 @@
+-- TODO(phase2-crud-migration): Create the products table.
+--
+-- Task:
+--   1. CREATE TABLE products with:
+--        id          BIGSERIAL PRIMARY KEY
+--        name        TEXT NOT NULL
+--        description TEXT NOT NULL DEFAULT ''
+--        price       BIGINT NOT NULL CHECK (price > 0)  -- cents
+--        created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+--   2. Run manually: psql $DATABASE_URL -f migrations/001_init.sql
+--   3. In Phase 3 you'll use golang-migrate for up/down migrations.
+--
+-- Learn: always use parameterized queries in Go — this file is schema only.

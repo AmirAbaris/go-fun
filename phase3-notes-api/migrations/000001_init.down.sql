@@ -1,0 +1,3 @@
+-- TODO(phase3-migration-down): Reverse the init migration.
+--
+-- Task: DROP tables in correct order (note_tags → notes → tags → users).
