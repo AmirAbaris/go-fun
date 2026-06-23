@@ -13,7 +13,34 @@ import "fmt"
 // Learn: https://go.dev/tour/methods/1 — methods, https://go.dev/tour/methods/9 — Stringer.
 // Run: go run ./exercises/03_methods
 
+type Book struct {
+	Title string
+	Author string
+}
+
+func (b *Book) String() string {
+	return b.Title + " by " + b.Author
+}
+
+func (b *Book) AddSpace() {
+	b.Title = b.Title + " "
+}
+
+// because we didnt used pointer reciver, it just reads and cant muatate here
+func (b Book) Log() {
+	fmt.Println("logged ", b.Title)
+}
+
 func main() {
-	var _ fmt.Stringer
+	var _ fmt.Stringer = (*Book)(nil)
 	// your code here
+	book := Book{
+		Title:  "1984",
+		Author: "George Orwell",
+	}
+
+	book.AddSpace()
+	book.Log()
+
+	fmt.Println(book)
 }
