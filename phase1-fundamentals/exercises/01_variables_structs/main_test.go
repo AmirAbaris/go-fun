@@ -12,6 +12,13 @@ import "testing"
 // Learn: https://go.dev/doc/tutorial/add-a-test
 // Verify: go test ./exercises/01_variables_structs -v
 
-func TestPlaceholder(t *testing.T) {
-	t.Skip("implement your table-driven test and remove this skip")
+func TestGreet(t *testing.T) {
+	person := Person{Name: "Abaris", Age: 23}
+	got := person.Greet()
+	want := "Hi Abaris"
+
+	if got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
+	
 }
