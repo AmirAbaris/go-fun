@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 // TODO(phase1-02): Learn pointers.
 //
 // Task:
@@ -11,6 +13,16 @@ package main
 // Learn: https://go.dev/tour/moretypes/1 — pointers.
 // Run: go run ./exercises/02_pointers
 
+func Increase(number *int) {
+	*number++
+}
+
 func main() {
-	// your code here
+	num := 0
+	
+	fmt.Println("Before: ", num)
+
+	Increase(&num)
+
+	fmt.Println("After: ", num)
 }
