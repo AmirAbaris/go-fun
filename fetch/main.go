@@ -1,9 +1,16 @@
 package main
 
+// ch <- 42 // send
+// variable := <-ch // receive
+
+// * Unbuffered → “sender and receiver must meet.”
+// * Buffered → “sender can drop results into the channel and continue.”
+
 import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sync"
 )
 
 type User struct {
@@ -11,31 +18,50 @@ type User struct {
 	Email string `json:"email"`
 }
 
-func main() {
-	resp, err := http.Get("https://jsonplaceholder.typicode.com/users/1")
+func FetchUser(id int, ch chan User, wg *sync.WaitGroup) {
+	defer wg.Done()
 
+	url := fmt.Sprintf(
+		"https://jsonplaceholder.typicode.com/users/%d",
+		id,
+	)
+
+	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Println("Error making request:", err)
+		fmt.Println("error: ", err)
 		return
 	}
 
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-
-		fmt.Println("Unexpected status:", resp.Status)
-		return
-	}
-
 	var user User
 
 	err = json.NewDecoder(resp.Body).Decode(&user)
-
 	if err != nil {
 		fmt.Println("Error decoding JSON:", err)
 		return
 	}
 
-	fmt.Println("Name:", user.Name)
-	fmt.Println("Email:", user.Email)
+	ch <- user
+}
+
+func main() {
+	var wg sync.WaitGroup
+
+	ch := make(chan User, 2)
+
+	wg.Add(2)
+
+	go FetchUser(1, ch, &wg)
+	go FetchUser(2, ch, &wg)
+
+	wg.Wait()
+	close(ch)
+
+	// close the channel when using range
+	// don’t bother closing if you know exactly how many values you’ll receive
+	for user := range ch {
+		fmt.Println(user)
+	}
+
 }
