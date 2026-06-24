@@ -1,4 +1,7 @@
+// Package calculator provides basic arithmetic operations.
 package calculator
+
+import "errors"
 
 // TODO(phase1-07): Learn packages and exported identifiers.
 //
@@ -13,17 +16,27 @@ package calculator
 
 // Add returns the sum of a and b.
 func Add(a, b int) int {
-	panic("TODO: implement Add")
+	return a + b
 }
 
 func Subtract(a, b int) int {
-	panic("TODO: implement Subtract")
+	return a - b
 }
 
 func Multiply(a, b int) int {
-	panic("TODO: implement Multiply")
+	return a * b
 }
 
 func Divide(a, b float64) (float64, error) {
-	panic("TODO: implement Divide")
+	if err := validate(b); err != nil {
+		return 0, err
+	}
+	return a / b, nil
+}
+
+func validate(b float64) error {
+	if b == 0 {
+		return errors.New("a and b must be non-zero")
+	}
+	return nil
 }
