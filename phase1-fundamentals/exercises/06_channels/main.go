@@ -37,6 +37,19 @@ func main() {
 		close(ch)
 	}()
 
+	// The range loop blocks waiting for values from the channel.
+	//
+	// Flow:
+	// 1. Worker goroutines send their IDs into the channel.
+	// 2. This loop receives those values and prints them.
+	// 3. After a worker successfully sends its value, it finishes and calls wg.Done().
+	// 4. When all workers are done, wg.Wait() in the closer goroutine unblocks.
+	// 5. The closer goroutine closes the channel.
+	// 6. The range loop detects that the channel is closed and exits automatically.
+	//
+	// Important: closing the channel does NOT unblock the workers.
+	// Receiving from the channel unblocks the workers.
+	// Closing the channel simply tells this loop that no more values will arrive.
 	for id := range ch {
 		fmt.Printf("id is: %d\n", id)
 	}
