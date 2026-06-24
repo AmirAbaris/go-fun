@@ -33,6 +33,7 @@ func main() {
 
 	go func() {
 		wg.Wait()
+		// close the channel only when you are sure that no more values will be sent.
 		close(ch)
 	}()
 
