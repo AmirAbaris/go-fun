@@ -1,6 +1,9 @@
 package errors
 
-import ("errors", "fmt")
+import (
+	"errors"
+    "fmt"
+)
 
 // TODO(phase1-04): Learn error handling in Go.
 //
@@ -26,7 +29,7 @@ func FindUser(id int) (*User, error) {
 
 	return &User{
 		ID: id,
-		Name: "Amir"
+		Name: "Amir",
 	}, nil
 }
 

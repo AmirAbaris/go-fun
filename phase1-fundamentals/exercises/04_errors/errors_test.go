@@ -14,7 +14,20 @@ import (
 //
 // Verify: go test ./exercises/04_errors -v
 
+// var ErrNotFound = errors.New("not found")
+
 func TestFindUserNotFound(t *testing.T) {
-	t.Skip("implement tests and remove this skip")
-	_ = errors.Is
+	_, err := FindUser(0)
+
+	if !errors.Is(err, ErrNotFound) {
+		t.Fatalf("expected ErrNotFound, got %v", err)
+	}
+}
+
+func TestGetUserWrapsErrNotFound(t *testing.T) {
+	_, err := GetUser(0)
+
+	if !errors.Is(err, ErrNotFound) {
+		t.Fatalf("expected wrapped ErrNotFound, got %v", err)
+	}
 }
