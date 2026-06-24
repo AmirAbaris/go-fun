@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"sync"
+)
+
 // TODO(phase1-05): Learn goroutines and sync.WaitGroup.
 //
 // Task:
@@ -12,6 +17,20 @@ package main
 // Learn: https://go.dev/tour/concurrency/1, https://pkg.go.dev/sync#WaitGroup
 // Run: go run ./exercises/05_goroutines
 
+func Runner(id int, wg *sync.WaitGroup) {
+	defer wg.Done()
+
+	fmt.Printf("worker id is: %d\n", id)
+}
+
 func main() {
 	// your code here
+	var wg sync.WaitGroup
+
+	for i := range 5 {
+		wg.Add(1)
+		go Runner(i, &wg)
+	}
+
+	wg.Wait()
 }
