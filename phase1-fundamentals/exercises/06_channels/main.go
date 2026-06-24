@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"sync"
+)
+
 // TODO(phase1-06): Learn channels and select.
 //
 // Task:
@@ -12,6 +17,26 @@ package main
 // Learn: https://go.dev/tour/concurrency/2, https://gobyexample.com/select
 // Run: go run ./exercises/06_channels
 
+func runner(id int, ch chan int, wg *sync.WaitGroup) {
+	defer wg.Done()
+	ch <- id
+}
+
 func main() {
-	// your code here
+	ch := make(chan int)
+	var wg sync.WaitGroup
+
+	for i := range 5 {
+		wg.Add(1)
+		go runner(i, ch, &wg)
+	}
+
+	go func() {
+		wg.Wait()
+		close(ch)
+	}()
+
+	for id := range ch {
+		fmt.Printf("id is: %d\n", id)
+	}
 }

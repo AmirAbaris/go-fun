@@ -55,6 +55,12 @@ func main() {
 	go FetchUser(1, ch, &wg)
 	go FetchUser(2, ch, &wg)
 
+	// user1 := <-ch
+	// user2 := <-ch
+
+	// fmt.Println(user1)
+	// fmt.Println(user2)
+
 	wg.Wait()
 	close(ch)
 
