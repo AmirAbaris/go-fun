@@ -1,0 +1,23 @@
+{
+  "go.useLanguageServer": true,
+  "go.alternateTools": {
+    "gopls": "/Users/amirabaris/go/bin/gopls"
+  },
+  "gopls": {
+    "ui.semanticTokens": true,
+    "ui.completion.usePlaceholders": true
+  },
+  "[go]": {
+    "editor.defaultFormatter": "golang.go",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[go.mod]": {
+    "editor.defaultFormatter": "golang.go"
+  },
+  "[go.work]": {
+    "editor.defaultFormatter": "golang.go"
+  }
+}

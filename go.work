@@ -1,0 +1,9 @@
+go 1.24.5
+
+use (
+	./phase1-fundamentals
+	./phase2-auth-api
+	./phase2-crud-api
+	./phase2-todo-api
+	./phase3-notes-api
+)
