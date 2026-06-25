@@ -1,5 +1,11 @@
 package main
 
+import (
+	"context"
+	"fmt"
+	"time"
+)
+
 // TODO(phase1-08): Learn context.Context.
 //
 // Task:
@@ -11,6 +17,23 @@ package main
 // Learn: https://pkg.go.dev/context, https://go.dev/blog/context
 // Run: go run ./exercises/08_context
 
+func fakeDBQuery(ctx context.Context, delay time.Duration) error {
+	select {
+	case <-time.After(delay):
+		fmt.Println("query finished successfully")
+		return nil
+
+	case <-ctx.Done():
+		return ctx.Err()
+	}
+}
+
 func main() {
 	// your code here
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+
+	if err := fakeDBQuery(ctx, 2*time.Second); err != nil {
+		fmt.Println("error: ", err)
+	}
 }
