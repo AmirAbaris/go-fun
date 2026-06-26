@@ -2,7 +2,10 @@ package middleware
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
+
+	"github.com/amirabaris/go-fun/phase2-auth-api/internal/store"
 )
 
 // TODO(phase2-auth-middleware): Implement authentication middleware.
@@ -30,11 +33,37 @@ import (
 type contextKey string
 
 const userIDKey contextKey = "userID"
+const sessionCookieName = "session_id"
 
 func UserIDFromContext(ctx context.Context) (string, bool) {
-	panic("TODO: implement UserIDFromContext")
+	userID, ok := ctx.Value(userIDKey).(string)
+
+	return userID, ok
 }
 
-func Auth(next http.Handler) http.Handler {
-	panic("TODO: implement Auth middleware — choose session OR JWT")
+func Auth(s store.Store) func(http.Handler) http.Handler {
+	return func(h http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			cookie, err := r.Cookie(sessionCookieName)
+			if err != nil {
+				http.Error(w, `{"error":"unauthorized"}`, http.StatusUnauthorized)
+				return
+			}
+
+			userID, err := s.GetSessionUserID(r.Context(), cookie.Value)
+			if err != nil || userID == "" {
+				writeUnauthorized(w)
+				return
+			}
+
+			ctx := context.WithValue(r.Context(), userIDKey, userID)
+			h.ServeHTTP(w, r.WithContext(ctx))
+		})
+	}
+}
+
+func writeUnauthorized(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusUnauthorized)
+	_ = json.NewEncoder(w).Encode(map[string]string{"error": "unauthorized"})
 }

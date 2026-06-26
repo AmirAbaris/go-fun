@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	"github.com/amirabaris/go-fun/phase2-auth-api/internal/middleware"
 	"github.com/amirabaris/go-fun/phase2-auth-api/internal/store"
 )
 
@@ -20,9 +21,26 @@ type MeHandler struct {
 }
 
 func NewMeHandler(s store.Store) *MeHandler {
-	panic("TODO: implement NewMeHandler")
+	return &MeHandler{store: s}
 }
 
 func (h *MeHandler) Me(w http.ResponseWriter, r *http.Request) {
-	panic("TODO: implement Me")
+	userID, ok := middleware.UserIDFromContext(r.Context())
+	if !ok {
+		writeError(w, http.StatusUnauthorized, "un authed")
+		return
+	}
+
+	user, err := h.store.GetUserByID(r.Context(), userID)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to fetch user")
+		return
+	}
+	if user.ID == "" {
+		writeError(w, http.StatusNotFound, "user not found")
+		return
+	}
+
+	writeJSON(w, http.StatusOK, toUserResponse(user))
+
 }

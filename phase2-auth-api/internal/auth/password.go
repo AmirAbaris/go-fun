@@ -1,5 +1,7 @@
 package auth
 
+import "golang.org/x/crypto/bcrypt"
+
 // TODO(phase2-auth-password): Implement password hashing with bcrypt.
 //
 // Task:
@@ -11,9 +13,19 @@ package auth
 // Allowed dep: golang.org/x/crypto/bcrypt (only non-stdlib dependency in this project).
 
 func HashPassword(plain string) (string, error) {
-	panic("TODO: implement HashPassword")
+	hash, err := bcrypt.GenerateFromPassword([]byte(plain), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+
+	return string(hash), nil
 }
 
 func CheckPassword(hash, plain string) error {
-	panic("TODO: implement CheckPassword")
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(plain))
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

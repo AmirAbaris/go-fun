@@ -1,6 +1,9 @@
 package domain
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
 // TODO(phase2-auth-domain): Define User domain model.
 //
@@ -26,12 +29,28 @@ type RegisterInput struct {
 }
 
 func (in RegisterInput) Validate() error {
-	panic("TODO: implement validation")
+	if in.Email == "" {
+		return errors.New("email is required")
+	}
+	if len(in.Password) < 8 {
+		return errors.New("password must be at least 8 characters")
+	}
+	return nil
 }
 
 type LoginInput struct {
 	Email    string
 	Password string
+}
+
+func (in LoginInput) Validate() error {
+	if in.Email == "" {
+		return errors.New("email is required")
+	}
+	if len(in.Password) < 8 {
+		return errors.New("password must be at least 8 characters")
+	}
+	return nil
 }
 
 type UserResponse struct {

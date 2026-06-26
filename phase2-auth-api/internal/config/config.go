@@ -1,5 +1,10 @@
 package config
 
+import (
+	"errors"
+	"os"
+)
+
 // TODO(phase2-auth-config): Load server configuration from environment.
 //
 // Task:
@@ -15,5 +20,23 @@ type Config struct {
 }
 
 func Load() (*Config, error) {
-	panic("TODO: implement config.Load")
+	port := os.Getenv("PORT")
+	sessionSecret := os.Getenv("SESSION_SECRET")
+
+	if port == "" {
+		return nil, errors.New("No port bro")
+	}
+
+	if sessionSecret == "" {
+		return nil, errors.New("No session sec bro")
+	}
+
+	if len(sessionSecret) < 32 {
+		return nil, errors.New("bad session sec bro")
+	}
+
+	return &Config{
+		Port:          port,
+		SessionSecret: sessionSecret,
+	}, nil
 }
